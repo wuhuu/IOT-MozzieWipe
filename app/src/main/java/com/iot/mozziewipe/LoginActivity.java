@@ -24,6 +24,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -34,7 +43,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-
+    // Firebase database instance variables
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference userRef;
+    FirebaseUser user;
+    Person person;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +77,37 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Person person = new Person(user);
-                    startMainActivity(person);
+                    userRef = database.getReference("user/" + user.getUid());
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            if (dataSnapshot.getValue() != null) {
+                                //user exists, do something
+                                String email = (String) dataSnapshot.child("email").getValue();
+                                String displayName = (String) dataSnapshot.child("displayName").getValue();
+                                String id = (String) dataSnapshot.child("id").getValue();
+                                Long points = (Long) dataSnapshot.child("points").getValue();
+                                Long energy = (Long) dataSnapshot.child("energy").getValue();
+                                person = new Person(id, displayName, email, points.intValue(), energy.intValue());
+                            } else {
+                                //user does not exist, create new user
+                                person = new Person(user);
+                                userRef.setValue(person.getPersonMap());
+                            }
+                            startMainActivity();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -79,13 +117,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         };
     }
 
-    private void startMainActivity(Person person) {
+    private void startMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("USER_ID", person.getPersonID());
-        intent.putExtra("USER_NAME", person.getPersonName());
-        intent.putExtra("USER_EMAIL", person.getPersonEmail());
-        intent.putExtra("USER_PHOTO", person.getPersonPhoto());
+        intent.putExtra("person", person);
         startActivity(intent);
+        finish();
     }
 
 

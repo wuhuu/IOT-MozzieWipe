@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.iot.mozziewipe.ProfileFragment"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:weightSum="1"
+        >
+
+        <TextView
+            android:text="Points:"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:layout_weight="0.91"
+            android:paddingTop="50dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Title" />
+
+        <TextView
+            android:id="@+id/points"
+            android:layout_width="211dp"
+            android:layout_height="138dp"
+            android:paddingTop="50dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="168dp">
+
+        <TextView
+            android:text="Name:"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:paddingTop="50dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Title" />
+
+        <TextView
+            android:id="@+id/displayName"
+            android:layout_width="211dp"
+            android:layout_height="138dp"
+            android:paddingTop="50dp"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Energy:"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:paddingTop="50dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Title" />
+
+        <TextView
+            android:id="@+id/energy"
+            android:layout_width="211dp"
+            android:layout_height="138dp"
+            android:paddingTop="50dp"/>
+    </LinearLayout>
+
+</LinearLayout>

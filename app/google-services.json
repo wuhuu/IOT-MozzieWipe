@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "749493943825",
+    "firebase_url": "https://mozziewipe-6eaca.firebaseio.com",
+    "project_id": "mozziewipe-6eaca",
+    "storage_bucket": "mozziewipe-6eaca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749493943825:android:40318b9e47319846",
+        "android_client_info": {
+          "package_name": "com.iot.mozziewipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749493943825-homuhorbasndtap1ae34gthq5c19e54t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iot.mozziewipe",
+            "certificate_hash": "6F389385AF21042C18A9FC557E8A4AE4C6842303"
+          }
+        },
+        {
+          "client_id": "749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7wRFV54MmEpBCtxneRPl7KqoDfU9Ihe8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

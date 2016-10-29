@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MozzieWipe</string>
+    <string name="server_client_id">749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com</string>
+    <string name="title_activity_maps">Map</string>
+</resources>

@@ -2,4 +2,13 @@
     <string name="app_name">MozzieWipe</string>
     <string name="server_client_id">749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com</string>
     <string name="title_activity_maps">Map</string>
+
+
+    <string name="energy"><u>Energy</u></string>
+    <string name="point"><u>Points</u></string>
+
+    <string name="capture_pre">Take picture</string>
+    <string name="capture_post">Take picture again</string>
+    <string name="instruction_msg">Help to fight against mosquito by taking a photo of the mosquito bite!</string>
+    <string name="success_msg">Thank you for the submission!</string>
 </resources>

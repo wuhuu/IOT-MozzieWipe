@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -25,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.vision.text.Text;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -42,7 +44,7 @@ import java.util.Map;
 public class CameraFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     //Energy increase by
-    final int ENERGY_INCREMENT = 10;
+    final int ENERGY_INCREMENT = 5;
     final int POINTS_INCREMENT = 1;
 
     static final int CAM_REQUEST = 1;
@@ -59,6 +61,9 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
     private Location location;
 
     private Person person;
+    private ImageView responseImage;
+    private TextView displayText;
+    private TextView captureText;
 
     View view;
 
@@ -80,6 +85,15 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        // Load the initial UI
+        responseImage = (ImageView) view.findViewById(R.id.swordImage);
+        displayText = (TextView) view.findViewById(R.id.displayText);
+        captureText = (TextView) view.findViewById(R.id.captureText);
+
+        responseImage.setImageResource(R.drawable.sword);
+        displayText.setText(R.string.instruction_msg);
+        captureText.setText(R.string.capture_pre);
 
         person = (Person) getArguments().getSerializable("person");
 
@@ -152,6 +166,11 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                 DatabaseReference userRef = database.getReference("user/" + person.getPersonID());
                 int nEnergy = person.getEnergy() + ENERGY_INCREMENT;
                 int nPoint = person.getPoints() + POINTS_INCREMENT;
+                if(nEnergy > 100) {
+                    nEnergy = 100;
+                    nPoint = nPoint + POINTS_INCREMENT;
+                }
+
                 Map<String, Object> updates = new HashMap<>();
                 updates.put("points", nPoint);
                 updates.put("energy", nEnergy);
@@ -162,10 +181,13 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                 // upload to Firebase Storage
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://mozziewipe-6eaca.appspot.com");
-                StorageReference storeageRef = storageRef.child("images/"+fileUri.getLastPathSegment());
+                StorageReference storeageRef = storageRef.child("images/"+person.getPersonID() + timestamp );
                 storeageRef.putFile(fileUri);
-                TextView displayText = (TextView) view.findViewById(R.id.displayText);
-                displayText.setText("Thank you for the submission");
+
+                // Update the UI after upload
+                responseImage.setImageResource(R.drawable.passed);
+                displayText.setText(R.string.success_msg);
+                captureText.setText(R.string.capture_post);
             }
         }
     }

@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -32,14 +33,49 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        TextView points = (TextView) view.findViewById(R.id.points);
-        TextView displayName = (TextView) view.findViewById(R.id.displayName);
-        TextView energy = (TextView) view.findViewById(R.id.energy);
 
+        //Load the UI for profile fragment
+        ImageView profilePicImage = (ImageView) view.findViewById(R.id.imageProfilePic);
+        ImageView trophyImage = (ImageView) view.findViewById(R.id.imageTrophy);
+        ImageView flameImage = (ImageView) view.findViewById(R.id.imageFlame);
+        TextView pointsText = (TextView) view.findViewById(R.id.textViewPoint);
+        TextView displayNameText = (TextView) view.findViewById(R.id.textViewDisplayName);
+        TextView energyText = (TextView) view.findViewById(R.id.textViewEnergy);
+
+        //initialize the value
         person = (Person) getArguments().getSerializable("person");
-        displayName.setText(person.getDisplayName());
-        points.setText(String.valueOf(person.getPoints()));
-        energy.setText(String.valueOf(person.getEnergy()));
+
+        trophyImage.setImageResource(R.drawable.trophy);
+        flameImage.setImageResource(R.drawable.flame);
+        displayNameText.setText(person.getDisplayName());
+        energyText.setText(String.valueOf(person.getEnergy()));
+        pointsText.setText(String.valueOf(person.getPoints()));
+        int points = person.getPoints() / 10;
+        switch (points) {
+            case 1:
+                profilePicImage.setImageResource(R.drawable.lvl1);
+                break;
+            case 2:
+                profilePicImage.setImageResource(R.drawable.lvl2);
+                break;
+            case 3:
+                profilePicImage.setImageResource(R.drawable.lvl3);
+                break;
+            case 4:
+                profilePicImage.setImageResource(R.drawable.lvl4);
+                break;
+            case 5:
+                profilePicImage.setImageResource(R.drawable.lvl5);
+                break;
+            case 6:
+                profilePicImage.setImageResource(R.drawable.lvl6);
+                break;
+            case 7:
+                profilePicImage.setImageResource(R.drawable.lvl7);
+                break;
+            default:
+                profilePicImage.setImageResource(R.drawable.lvl8);
+        }
 
         return view;
     }

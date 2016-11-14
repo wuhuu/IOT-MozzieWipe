@@ -7,7 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.iot.mozziewipe.LoginActivity">
+    tools:context="com.iot.mozziewipe.LoginActivity"
+    android:background="@drawable/mozzie">
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"

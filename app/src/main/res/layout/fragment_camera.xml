@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,17 +7,55 @@
     tools:context="com.iot.mozziewipe.CameraFragment"
     android:weightSum="1">
 
-    <TextView
-        android:text="Help to fight against mosquito.Take a photo of the mosquito bites."
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/displayText"
-        android:layout_weight="0.27" />
+        android:layout_height="252dp"
+        android:id="@+id/swordImage"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:paddingTop="32dp"
+        app:srcCompat="@drawable/sword" />
 
-    <Button
-        android:id="@+id/button_capture"
-        android:text="Take Photo"
+    <TextView
+        android:text="Help fight against mosquito by taking a photo of the mosquito bite! "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/displayText"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:paddingTop="12dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="122dp"
+        android:weightSum="1"
+        android:layout_weight="0.34"
+        android:elevation="0dp">
+
+        <Button
+            android:id="@+id/button_capture"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/camera"
+            style="@android:style/Widget.Holo.Button"
+            android:elevation="1dp"
+            android:layout_marginLeft="103dp"
+            android:layout_weight="0.08" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="Take picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/captureText"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
 </LinearLayout>

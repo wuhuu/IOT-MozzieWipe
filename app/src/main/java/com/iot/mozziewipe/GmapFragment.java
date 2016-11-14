@@ -94,13 +94,13 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
         getMap().setOnMarkerClickListener(mClusterManager);
 
         // Add cluster items (markers) to the cluster manager.
-        addItems();
+        addItems(mClusterManager);
     }
 
     //Need to change to retrieve from firebase
-    private void addItems() {
+    private void addItems(final ClusterManager mClusterManager) {
 
-        long currentTS = (System.currentTimeMillis()/1000);
+        final long currentTS = (System.currentTimeMillis()/1000);
         final long threeHrAgo = (currentTS - (3 * 3600)) * -1;
 
         biteRef = database.getReference("bites");
@@ -118,7 +118,6 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
                             mClusterManager.addItem(offsetItem);
                         }
                     }
-
                 }
             }
 

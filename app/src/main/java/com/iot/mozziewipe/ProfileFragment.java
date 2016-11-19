@@ -41,6 +41,7 @@ public class ProfileFragment extends Fragment {
         TextView pointsText = (TextView) view.findViewById(R.id.textViewPoint);
         TextView displayNameText = (TextView) view.findViewById(R.id.textViewDisplayName);
         TextView energyText = (TextView) view.findViewById(R.id.textViewEnergy);
+        TextView levelText = (TextView) view.findViewById(R.id.textViewLevel);
 
         //initialize the value
         person = (Person) getArguments().getSerializable("person");
@@ -54,27 +55,35 @@ public class ProfileFragment extends Fragment {
         switch (points) {
             case 1:
                 profilePicImage.setImageResource(R.drawable.lvl1);
+                levelText.setText(R.string.level1);
                 break;
             case 2:
                 profilePicImage.setImageResource(R.drawable.lvl2);
+                levelText.setText(R.string.level2);
                 break;
             case 3:
                 profilePicImage.setImageResource(R.drawable.lvl3);
+                levelText.setText(R.string.level3);
                 break;
             case 4:
                 profilePicImage.setImageResource(R.drawable.lvl4);
+                levelText.setText(R.string.level4);
                 break;
             case 5:
                 profilePicImage.setImageResource(R.drawable.lvl5);
+                levelText.setText(R.string.level5);
                 break;
             case 6:
                 profilePicImage.setImageResource(R.drawable.lvl6);
+                levelText.setText(R.string.level6);
                 break;
             case 7:
                 profilePicImage.setImageResource(R.drawable.lvl7);
+                levelText.setText(R.string.level7);
                 break;
             default:
                 profilePicImage.setImageResource(R.drawable.lvl8);
+                levelText.setText(R.string.level8);
         }
 
         return view;

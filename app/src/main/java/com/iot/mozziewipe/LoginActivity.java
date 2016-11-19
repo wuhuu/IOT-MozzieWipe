@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .build();
 
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -177,6 +177,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             firebaseAuthWithGoogle(account);
         } else {
             // Signed out, show unauthenticated UI.
+            System.out.println("TESTING123");
         }
     }
 

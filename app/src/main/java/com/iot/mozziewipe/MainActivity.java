@@ -10,15 +10,12 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.MapFragment;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.roughike.bottombar.BottomBar;
@@ -114,37 +111,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 }
             }
         });
-
-        /*
-        bottomBar.setFragmentItems(getSupportFragmentManager(), R.id.fragmentContainer,
-                new BottomBarFragment(ProfileFragment.newInstance(userName), R.drawable.ic_person_outline_black_24dp, "User"),
-                new BottomBarFragment(CameraFragment.newInstance(userID), R.drawable.ic_party_mode_black_24dp, "Camera"),
-                new BottomBarFragment(GmapFragment.newInstance("Content for Map."), R.drawable.ic_map_black_24dp, "Map")
-        );
-
-        // Setting colors for different tabs when there's more than three of them.
-        bottomBar.mapColorForTab(0, "#3B494C");
-        bottomBar.mapColorForTab(1, "#00796B");
-        bottomBar.mapColorForTab(2, "#7B1FA2");
-
-        */
-
-        // Make a Badge for the first tab, with red background color and a value of "4".
-        //BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 4);
-
-        // Control the badge's visibility
-        // unreadMessages.show();
-        //unreadMessages.hide();
-
-        // Change the displayed count for this badge.
-        //unreadMessages.setCount(4);
-
-        // Change the show / hide animation duration.
-        // unreadMessages.setAnimationDuration(200);
-
-        // If you want the badge be shown always after unselecting the tab that contains it.
-        //unreadMessages.setAutoShowAfterUnSelection(true);
-
     }
 
 

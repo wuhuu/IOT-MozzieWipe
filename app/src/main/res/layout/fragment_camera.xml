@@ -16,18 +16,25 @@
         android:paddingTop="32dp"
         app:srcCompat="@drawable/sword" />
 
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="252dp"
+        android:id="@+id/waitingImage"
+        android:visibility="gone" />
+
     <TextView
         android:text="Help fight against mosquito by taking a photo of the mosquito bite! "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/displayText"
-        android:textAppearance="@android:style/TextAppearance.Material"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="24sp"
         android:paddingTop="12dp"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp" />
+        android:paddingRight="24dp"
+        android:textColor="@color/bb_darkBackgroundColor" />
 
     <LinearLayout
         android:orientation="horizontal"

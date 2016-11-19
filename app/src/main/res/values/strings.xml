@@ -3,12 +3,26 @@
     <string name="server_client_id">749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com</string>
     <string name="title_activity_maps">Map</string>
 
-
     <string name="energy"><u>Energy</u></string>
     <string name="point"><u>Points</u></string>
+    <string name="level1"><u>Level 1</u></string>
+    <string name="level2"><u>Level 2</u></string>
+    <string name="level3"><u>Level 3</u></string>
+    <string name="level4"><u>Level 4</u></string>
+    <string name="level5"><u>Level 5</u></string>
+    <string name="level6"><u>Level 6</u></string>
+    <string name="level7"><u>Level 7</u></string>
+    <string name="level8"><u>Level 8</u></string>
 
     <string name="capture_pre">Take picture</string>
     <string name="capture_post">Take picture again</string>
     <string name="instruction_msg">Help to fight against mosquito by taking a photo of the mosquito bite!</string>
     <string name="success_msg">Thank you for the submission!</string>
+    <string name="nobite_msg">Thank you for the submission! That might not be a mosquito bite.</string>
+    <string name="waiting_msg">Please wait while we check the image.</string>
+    <string name="failed_msg">The image failed to upload. Please try again.</string>
+    <string name="tensorflow_api_url">http://104.155.235.50/label</string>
+
+    <string name="currentLoc">Your current location</string>
+    <string name="searchLoc">Searched Location</string>
 </resources>

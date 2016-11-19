@@ -13,18 +13,29 @@
         app:srcCompat="@drawable/lvl1"
         android:layout_row="0"
         android:layout_column="0"
-        android:paddingTop="24dp"
+        android:paddingTop="20dp"
         android:id="@+id/imageProfilePic" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="63dp"
         android:id="@+id/textViewDisplayName"
-        android:textAppearance="@android:style/TextAppearance.Material"
         android:textAlignment="center"
         android:textStyle="bold"
         android:textSize="24sp"
-        android:paddingTop="15dp" />
+        android:paddingTop="8dp"
+        android:textColor="@color/bb_darkBackgroundColor"
+        android:layout_height="43dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/textViewLevel"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/bb_darkBackgroundColor"
+        android:layout_height="33dp"
+        android:paddingTop="4dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -52,21 +63,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4"
-                android:textAppearance="@android:style/TextAppearance.Material"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textStyle="bold"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                android:textColor="@color/bb_darkBackgroundColor" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewPoint"
-                android:textAppearance="@android:style/TextAppearance.Material"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textSize="18sp"
-                android:paddingTop="20dp" />
+                android:paddingTop="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,21 +101,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView5"
-                android:textAppearance="@android:style/TextAppearance.Material"
                 android:textAllCaps="false"
                 android:textAlignment="center"
                 android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="@color/bb_darkBackgroundColor" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewEnergy"
-                android:textAppearance="@android:style/TextAppearance.Material"
+
                 android:textAllCaps="false"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                android:paddingTop="20dp" />
+                android:paddingTop="18dp" />
         </LinearLayout>
 
     </LinearLayout>

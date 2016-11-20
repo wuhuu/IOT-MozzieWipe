@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:749493943825:android:40318b9e47319846",
+        "mobilesdk_app_id": "1:749493943825:android:d990d449b6e59ac2",
         "android_client_info": {
-          "package_name": "com.iot.mozziewipe"
+          "package_name": "is439.iot.mozziewipe"
         }
       },
       "oauth_client": [
         {
-          "client_id": "749493943825-homuhorbasndtap1ae34gthq5c19e54t.apps.googleusercontent.com",
+          "client_id": "749493943825-9bnnlv38tkmdaik5mt9v6rddod3buvf5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.iot.mozziewipe",
+            "package_name": "is439.iot.mozziewipe",
             "certificate_hash": "6F389385AF21042C18A9FC557E8A4AE4C6842303"
           }
         },
@@ -44,68 +44,6 @@
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:749493943825:android:0ff85de23101d0e9",
-        "android_client_info": {
-          "package_name": "com.sis.iot.mozziewipe"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB7wRFV54MmEpBCtxneRPl7KqoDfU9Ihe8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:749493943825:android:d990d449b6e59ac2",
-        "android_client_info": {
-          "package_name": "is439.iot.mozziewipe"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB7wRFV54MmEpBCtxneRPl7KqoDfU9Ihe8"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

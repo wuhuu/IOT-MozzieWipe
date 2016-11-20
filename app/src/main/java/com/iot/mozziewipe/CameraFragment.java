@@ -171,13 +171,13 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                 Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(), options);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] bytes = baos.toByteArray();
-                String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
+                //byte[] bytes = baos.toByteArray();
+                //String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
 
                 //upload to Firebase Database
                 DatabaseReference biteRef = database.getReference("bites/" + timestamp + "/" + person.getPersonID());
                 Map mLocations = new HashMap();
-                mLocations.put("image_Base64", base64Image);
+                //mLocations.put("image_Base64", base64Image);
                 mLocations.put("image_name", imageName);
                 mLocations.put("latitude", location.getLatitude());
                 mLocations.put("longitude", location.getLongitude());

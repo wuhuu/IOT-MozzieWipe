@@ -43,7 +43,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +57,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap mMap;
     // Declare a variable for the cluster manager.
     private ClusterManager<GeoItem> mClusterManager;
+    private ClusterManager<GeoItem> sClusterManager;
 
     // UI Variable
     View view;
@@ -231,7 +231,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
 
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)
-        ClusterManager<GeoItem> sClusterManager = new ClusterManager<>(getActivity(), getMap());
+        sClusterManager = new ClusterManager<>(getActivity(), getMap());
 
         // Point the map's listeners at the listeners implemented by the cluster manager.
         getMap().setOnCameraIdleListener(sClusterManager);

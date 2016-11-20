@@ -8,6 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -30,29 +32,38 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "GoogleLogin";
     private static final int RC_SIGN_IN = 9001;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
+
     // Firebase database instance variables
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference userRef;
     FirebaseUser user;
     Person person;
-    private GoogleApiClient mGoogleApiClient;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    ProgressBar waitingSignIn;
+    TextView failedSignInText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         getUserPermission();
+        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
+        waitingSignIn = (ProgressBar) findViewById(R.id.waitingSignIn);
+        failedSignInText = (TextView) findViewById(R.id.failSignInText);
 
         // Configure sign-in to request the user's ID, email address, and basic profile.
         // ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
+                .requestIdToken(LoginActivity.this.getResources().getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
 
@@ -62,9 +73,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_WIDE);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                waitingSignIn.setVisibility(View.VISIBLE);
+                failedSignInText.setVisibility(View.GONE);
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -118,12 +136,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         finish();
     }
 
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
     private void getUserPermission() {
         // Check for location Permission
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -139,17 +151,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-            // ...
-        }
+        failedSignInText.setVisibility(View.VISIBLE);
+        failedSignInText.setText("Google Play Services error.");
     }
 
     @Override
@@ -165,13 +168,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        System.out.println("TESTING123");
+        System.out.println(result.toString());
+        System.out.println(result.getStatus().toString());
+
         if (result.isSuccess()) {
             // Google Sign In was successful, authenticate with Firebase
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
         } else {
             // Signed out, show unauthenticated UI.
-
+            waitingSignIn.setVisibility(View.GONE);
+            failedSignInText.setText("FAILED TO SIGN IN WITH GOOGLE");
+            failedSignInText.setVisibility(View.VISIBLE);
         }
     }
 
@@ -198,14 +207,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+                        waitingSignIn.setVisibility(View.GONE);
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "signInWithCredential FAIL", task.getException());
+                            failedSignInText.setText("FAILED TO SIGN IN WITH GOOGLE TO FIREBASE");
+                            failedSignInText.setVisibility(View.VISIBLE);
                         }
                         // ...
                     }

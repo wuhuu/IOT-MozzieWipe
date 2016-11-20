@@ -3,6 +3,8 @@
     <string name="server_client_id">749493943825-rl43j43u8opm3mos71m8d9em1j72fv4g.apps.googleusercontent.com</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="failedSignIn">Failed to Sign in. Please Try again.</string>
+
     <string name="energy"><u>Energy</u></string>
     <string name="point"><u>Points</u></string>
     <string name="level1"><u>Level 1</u></string>

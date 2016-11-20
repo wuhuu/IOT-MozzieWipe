@@ -10,7 +10,7 @@
     6F:38:93:85:AF:21:04:2C:18:A9:FC:55:7E:8A:4A:E4:C6:84:23:03;com.iot.mozziewipe
 
     Alternatively, follow the directions here:
-    https://developers.google.com/maps/documentation/android/start#get-key
+        https://developers.google.com/maps/documentation/android/start#get-key
 
     Once you have your key (it starts with "AIza"), replace the "google_maps_key"
     string in this file.

@@ -4,11 +4,11 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.2"
     defaultConfig {
-        applicationId "com.iot.mozziewipe"
+        applicationId "is439.iot.mozziewipe"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 2
-        versionName "2.1"
+        versionCode 4
+        versionName "4.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

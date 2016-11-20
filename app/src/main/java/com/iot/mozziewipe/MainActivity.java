@@ -4,11 +4,11 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -26,17 +26,14 @@ import java.util.Map;
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     final int ENERGY_DEDUCTION = 2;
-
     // Firebase database instance variables
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-
     // Location
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location location;
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-
     private Person person;
     private BottomBar bottomBar;
 
@@ -58,7 +55,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                 .setFastestInterval(1000); // 1 second, in milliseconds
 
         Intent intent = getIntent();
-        person = (Person)intent.getSerializableExtra("person");
+        person = (Person) intent.getSerializableExtra("person");
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
 
@@ -74,10 +71,10 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                     System.out.println("camera");
                     CameraFragment fragment = CameraFragment.newInstance(person);
                     fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
-                } else if (menuItemId == R.id.menu_map){
+                } else if (menuItemId == R.id.menu_map) {
                     System.out.println("Map");
                     int nEnergy = person.getEnergy() - ENERGY_DEDUCTION;
-                    if(nEnergy > 0) {
+                    if (nEnergy > 0) {
                         //update the energy
                         person.setEnergy(nEnergy);
                         DatabaseReference userRef = database.getReference("user/" + person.getPersonID());
@@ -88,7 +85,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
                         GmapFragment fragment = GmapFragment.newInstance(location.getLatitude(), location.getLongitude());
                         fm.beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
                     } else {
-                        Snackbar.make(findViewById(R.id.myCoordinatorLayout),"Sorry, you don't have enough energy.",
+                        Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Sorry, you don't have enough energy.",
                                 Snackbar.LENGTH_SHORT)
                                 .show();
                     }
@@ -101,10 +98,10 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.Co
 
             @Override
             public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.menu_map){
+                if (menuItemId == R.id.menu_map) {
                     int nEnergy = person.getEnergy() - ENERGY_DEDUCTION;
-                    if(nEnergy < 0) {
-                        Snackbar.make(findViewById(R.id.myCoordinatorLayout),"Sorry, you don't have enough energy.",
+                    if (nEnergy < 0) {
+                        Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Sorry, you don't have enough energy.",
                                 Snackbar.LENGTH_SHORT)
                                 .show();
                     }

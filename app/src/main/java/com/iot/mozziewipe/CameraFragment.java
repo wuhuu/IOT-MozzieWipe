@@ -1,5 +1,6 @@
 package com.iot.mozziewipe;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
@@ -7,7 +8,6 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -22,12 +22,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request.Method;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -40,10 +39,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.iot.mozziewipe.support.VolleySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,34 +53,29 @@ import java.util.Map;
 
 public class CameraFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
+    static final int CAM_REQUEST = 1;
+    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final double SCORE_THRESHOLD = 0.35;
     //Energy increase by
     final int ENERGY_INCREMENT = 4;
     final int POINTS_INCREMENT = 1;
     final int BONUS_POINTS = 3;
-
-    static final int CAM_REQUEST = 1;
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     Button captureBtn;
-
     // Firebase database instance variables
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    View view;
     private Uri fileUri;
-
     // Location
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location location;
-
     // UI Variable
     private Person person;
     private ImageView responseImage;
     private TextView displayText;
     private TextView captureText;
+    private TextView scoreText;
     private ProgressBar waitingImage;
-
-    private static final double SCORE_THRESHOLD = 0.35;
-
-    View view;
 
     public CameraFragment() {
         // Required empty public constructor
@@ -107,6 +101,7 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
         waitingImage = (ProgressBar) view.findViewById(R.id.waitingImage);
         displayText = (TextView) view.findViewById(R.id.displayText);
         captureText = (TextView) view.findViewById(R.id.captureText);
+        scoreText = (TextView) view.findViewById(R.id.scoreText);
 
         responseImage.setImageResource(R.drawable.sword);
         displayText.setText(R.string.instruction_msg);
@@ -118,6 +113,8 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
         captureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                scoreText.setText("");
+                scoreText.setVisibility(View.GONE);
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 fileUri = Uri.fromFile(getOutputMediaFile());
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
@@ -161,7 +158,7 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
         if (requestCode == CAM_REQUEST) {
             if (resultCode == getActivity().RESULT_OK) {
 
-                long timestamp = (System.currentTimeMillis()/1000) * -1;
+                long timestamp = (System.currentTimeMillis() / 1000) * -1;
                 String imageName = person.getPersonID() + timestamp + ".jpg";
 
                 //Hide the image first and show loading bar
@@ -190,7 +187,7 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                 DatabaseReference userRef = database.getReference("user/" + person.getPersonID());
                 int nEnergy = person.getEnergy() + ENERGY_INCREMENT;
                 int nPoint = person.getPoints() + POINTS_INCREMENT;
-                if(nEnergy > 100) {
+                if (nEnergy > 100) {
                     nEnergy = 100;
                     nPoint = nPoint + POINTS_INCREMENT;
                 }
@@ -205,7 +202,7 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                 // upload to Firebase Storage
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://mozziewipe-6eaca.appspot.com").child("images/" + imageName);
-                UploadTask uploadTask  = storageRef.putFile(fileUri);
+                UploadTask uploadTask = storageRef.putFile(fileUri);
 
                 // Manage upload to storage, what to do if failed / success
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -214,25 +211,22 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                         String imageName = taskSnapshot.getMetadata().getName();
 
-                        //Invoke tensorflow RESTful API
-                        String url = getResources().getString(R.string.tensorflow_api_url);
-                        //String url = "http://api.androidhive.info/volley/person_object.json";
+                        // Invoke tensorflow RESTful API
+                        String url = getResources().getString(R.string.image_score_url);
 
-                        Map<String, String> params = new HashMap<String, String>();
+                        Map<String, String> params = new HashMap<>();
                         params.put("image_name", imageName);
 
                         JsonObjectRequest jsonRequest = new JsonObjectRequest(Method.POST, url, new JSONObject(params),
                                 new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
-                                        System.out.println("TESTING456");
                                         try {
-                                            //String scoreResponse = "0.17";
-                                            String scoreResponse =  response.getString("score");
-                                            System.out.println("scoreResponse");
-                                            System.out.println(scoreResponse);
+                                            String scoreResponse = response.getString("score");
                                             double score = Double.valueOf(scoreResponse);
-                                            if(score < SCORE_THRESHOLD) {
+                                            Log.d("Call Image API", response.toString());
+                                            scoreText.setText("Score : " + scoreResponse);
+                                            if (score < SCORE_THRESHOLD) {
                                                 nobiteImage();
                                             } else {
                                                 successfulImage();
@@ -252,12 +246,13 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 //Current same as success
-                                Log.i("Call Image API", "Failed to call API, Return error msg :" + error.getMessage());
+                                Log.i("Image Error.Response", error.toString());
                                 successfulImage();
                             }
                         });
-                        RequestQueue queue = Volley.newRequestQueue(getActivity());
-                        queue.add(jsonRequest);
+                        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        VolleySingleton.getInstance(getActivity()).addToRequestQueue(jsonRequest);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -338,6 +333,7 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
         responseImage.setVisibility(View.VISIBLE);
         captureBtn.setVisibility(View.VISIBLE);
         captureText.setVisibility(View.VISIBLE);
+        scoreText.setVisibility(View.VISIBLE);
 
         responseImage.setImageResource(R.drawable.passed);
         displayText.setText(R.string.success_msg);
@@ -348,9 +344,10 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
         responseImage.setVisibility(View.VISIBLE);
         captureBtn.setVisibility(View.VISIBLE);
         captureText.setVisibility(View.VISIBLE);
+        scoreText.setVisibility(View.VISIBLE);
 
         responseImage.setImageResource(R.drawable.nobite);
-        displayText.setText(R.string.nobite_msg);
+        displayText.setText(R.string.no_bite_msg);
     }
 
     public void failedToUpload() {

@@ -3,119 +3,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.iot.mozziewipe.ProfileFragment"
+    android:orientation="vertical"
     android:weightSum="1"
-    android:orientation="vertical">
+    tools:context="com.iot.mozziewipe.ProfileFragment">
 
     <ImageView
+        android:id="@+id/imageProfilePic"
         android:layout_width="match_parent"
         android:layout_height="273dp"
-        app:srcCompat="@drawable/lvl1"
-        android:layout_row="0"
         android:layout_column="0"
+        android:layout_row="0"
         android:paddingTop="20dp"
-        android:id="@+id/imageProfilePic" />
+        app:srcCompat="@drawable/lvl1" />
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/textViewDisplayName"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:textSize="24sp"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
         android:paddingTop="8dp"
+        android:textAlignment="center"
         android:textColor="@color/bb_darkBackgroundColor"
-        android:layout_height="43dp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/textViewLevel"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:paddingTop="4dp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textStyle="bold"
-        android:textSize="18sp"
         android:textColor="@color/bb_darkBackgroundColor"
-        android:layout_height="33dp"
-        android:paddingTop="4dp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.48"
+            android:orientation="vertical"
             android:weightSum="1">
 
             <ImageView
-                android:layout_width="match_parent"
-                app:srcCompat="@drawable/trophy"
                 android:id="@+id/imageTrophy"
-                android:layout_row="4"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
                 android:layout_column="0"
+                android:layout_row="4"
                 android:layout_weight="0.01"
-                android:layout_height="80dp" />
+                app:srcCompat="@drawable/trophy" />
 
             <TextView
-                android:text="@string/point"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/textView4"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/bb_darkBackgroundColor" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewPoint"
+                android:text="@string/point"
                 android:textAlignment="center"
                 android:textAllCaps="false"
+                android:textColor="@color/bb_darkBackgroundColor"
                 android:textSize="18sp"
-                android:paddingTop="18dp" />
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewPoint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="18dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.48"
+            android:orientation="vertical"
             android:weightSum="1">
 
             <ImageView
+                android:id="@+id/imageFlame"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:srcCompat="@drawable/flame"
-                android:id="@+id/imageFlame"
-                android:layout_row="4"
                 android:layout_column="0"
-                android:layout_weight="0.01" />
+                android:layout_row="4"
+                android:layout_weight="0.01"
+                app:srcCompat="@drawable/flame" />
 
 
             <TextView
-                android:text="@string/energy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/textView5"
-                android:textAllCaps="false"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@color/bb_darkBackgroundColor" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textViewEnergy"
-
-                android:textAllCaps="false"
+                android:text="@string/energy"
                 android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/bb_darkBackgroundColor"
                 android:textSize="18sp"
-                android:paddingTop="18dp" />
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewEnergy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:paddingTop="18dp"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textSize="18sp" />
         </LinearLayout>
 
     </LinearLayout>

@@ -1,19 +1,27 @@
 package com.iot.mozziewipe;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.iot.mozziewipe.support.CustomRequest;
 
 import android.app.Fragment;
 import android.content.Context;
+
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+
+import com.android.volley.Request;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,9 +36,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.clustering.ClusterManager;
+import com.iot.mozziewipe.support.VolleySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class GmapFragment extends Fragment implements OnMapReadyCallback {
@@ -47,6 +63,7 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
     View view;
     Button searchBtn;
     EditText locationSearch;
+    ProgressBar waitingSearch;
 
     public GmapFragment() {
         // Required empty public constructor
@@ -67,11 +84,13 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         view =  inflater.inflate(R.layout.fragment_gmap, container, false);
 
+        locationSearch = (EditText) view.findViewById(R.id.editTextSearch);
+        waitingSearch = (ProgressBar) view.findViewById(R.id.waitingSearch);
         searchBtn = (Button) view.findViewById(R.id.buttonSearch);
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMapSearch(view);
+                onMapSearch();
                 // hide the keyboard
                 try {
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -104,18 +123,22 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
         mMap.addMarker(new MarkerOptions()
                 .position(currentLoc)
                 .title(getResources().getString(R.string.currentLoc))
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
         );
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLoc));
-        setUpClusterer(currentLoc);
+        setUpCluster(currentLoc);
     }
 
-    public void onMapSearch(View view) {
-        EditText locationSearch = (EditText) view.findViewById(R.id.editTextSearch);
+    public void onMapSearch() {
         String location = locationSearch.getText().toString();
+        // disable the text book, hide the search btn and show progress bar
+        locationSearch.setEnabled(false);
+        searchBtn.setVisibility(View.GONE);
+        waitingSearch.setVisibility(View.VISIBLE);
+
         List<Address> addressList = null;
 
-        if (location != null || !location.equals("")) {
+        if (!location.isEmpty()) {
             Geocoder geocoder = new Geocoder(getActivity());
             try {
                 addressList = geocoder.getFromLocationName(location, 1);
@@ -128,13 +151,36 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
             mMap.addMarker(new MarkerOptions()
                     .position(latLng)
                     .title(getResources().getString(R.string.searchLoc))
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    .draggable(true));
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+            // Invoke mosquito Activity API
+            String url = getResources().getString(R.string.mosquito_activity_url);
+            Map<String, Double> params = new HashMap<>();
+            params.put("lat", address.getLatitude());
+            params.put("long",  address.getLongitude());
+
+            CustomRequest mosquitoActivityReq = new CustomRequest(Request.Method.POST, url, new JSONObject(params),
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.i("mosquitoActivityReq API", "Response : " + response.toString());
+                            setUpSearchCluster(response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("mosquitoActivityReq API", "Error : " + error.toString());
+
+                }
+            });
+            mosquitoActivityReq.setRetryPolicy(new DefaultRetryPolicy(50000,5,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            VolleySingleton.getInstance(getActivity()).addToRequestQueue(mosquitoActivityReq);
         }
     }
 
-    private void setUpClusterer(LatLng currentLoc) {
+    private void setUpCluster(LatLng currentLoc) {
 
         // Position the map. Zoom level
         getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 15));
@@ -175,12 +221,37 @@ public class GmapFragment extends Fragment implements OnMapReadyCallback {
                     }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
+    }
+
+    private void setUpSearchCluster(JSONArray clusterResponse) {
+
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        ClusterManager<GeoItem> sClusterManager = new ClusterManager<>(getActivity(), getMap());
+
+        // Point the map's listeners at the listeners implemented by the cluster manager.
+        getMap().setOnCameraIdleListener(sClusterManager);
+        getMap().setOnMarkerClickListener(sClusterManager);
+
+        try {
+            // Add cluster items (markers) to the cluster manager.
+            for(int i=0; i< clusterResponse.length(); i++) {
+                double lat = clusterResponse.getJSONObject(i).optDouble("latitude");
+                double lng = clusterResponse.getJSONObject(i).optDouble("longitude");
+                GeoItem offsetItem = new GeoItem(lat, lng);
+                sClusterManager.addItem(offsetItem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            locationSearch.setEnabled(true);
+            searchBtn.setVisibility(View.VISIBLE);
+            waitingSearch.setVisibility(View.GONE);
+        }
 
     }
 

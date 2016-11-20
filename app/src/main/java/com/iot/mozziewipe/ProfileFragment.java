@@ -53,6 +53,10 @@ public class ProfileFragment extends Fragment {
         pointsText.setText(String.valueOf(person.getPoints()));
         int points = person.getPoints() / 10;
         switch (points) {
+            case 0:
+                profilePicImage.setImageResource(R.drawable.lvl1);
+                levelText.setText(R.string.level1);
+                break;
             case 1:
                 profilePicImage.setImageResource(R.drawable.lvl1);
                 levelText.setText(R.string.level1);

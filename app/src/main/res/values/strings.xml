@@ -18,11 +18,12 @@
     <string name="capture_post">Take picture again</string>
     <string name="instruction_msg">Help to fight against mosquito by taking a photo of the mosquito bite!</string>
     <string name="success_msg">Thank you for the submission!</string>
-    <string name="nobite_msg">Thank you for the submission! That might not be a mosquito bite.</string>
+    <string name="no_bite_msg">Thank you for the submission! That might not be a mosquito bite.</string>
     <string name="waiting_msg">Please wait while we check the image.</string>
     <string name="failed_msg">The image failed to upload. Please try again.</string>
-    <string name="tensorflow_api_url">http://104.155.235.50/label</string>
+    <string name="image_score_url">http://107.167.179.72/label</string>
 
     <string name="currentLoc">Your current location</string>
     <string name="searchLoc">Searched Location</string>
+    <string name="mosquito_activity_url">http://107.167.179.72/getMosquitoActivity</string>
 </resources>

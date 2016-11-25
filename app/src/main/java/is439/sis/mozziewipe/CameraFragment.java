@@ -1,6 +1,6 @@
-package is439.iot.mozziewipe;
+package is439.sis.mozziewipe;
 
-import is439.iot.mozziewipe.support.VolleySingleton;
+import is439.sis.mozziewipe.support.VolleySingleton;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -55,7 +55,7 @@ public class CameraFragment extends Fragment implements GoogleApiClient.Connecti
 
     static final int CAM_REQUEST = 1;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private static final double SCORE_THRESHOLD = 0.35;
+    private static final double SCORE_THRESHOLD = 0.50;
     //Energy increase by
     final int ENERGY_INCREMENT = 4;
     final int POINTS_INCREMENT = 1;

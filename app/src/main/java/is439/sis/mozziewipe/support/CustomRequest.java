@@ -1,4 +1,4 @@
-package is439.iot.mozziewipe.support;
+package is439.sis.mozziewipe.support;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;

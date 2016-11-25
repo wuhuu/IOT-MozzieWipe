@@ -1,8 +1,9 @@
-package is439.iot.mozziewipe;
+package is439.sis.mozziewipe;
 
+
+import is439.sis.mozziewipe.support.CustomRequest;
+import is439.sis.mozziewipe.support.VolleySingleton;
 import com.android.volley.DefaultRetryPolicy;
-import is439.iot.mozziewipe.support.CustomRequest;
-
 import android.app.Fragment;
 import android.content.Context;
 
@@ -36,7 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.clustering.ClusterManager;
-import is439.iot.mozziewipe.support.VolleySingleton;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;

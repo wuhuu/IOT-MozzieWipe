@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context="is439.iot.mozziewipe.CameraFragment">
+    tools:context="is439.sis.mozziewipe.CameraFragment">
 
     <ImageView
         android:id="@+id/swordImage"

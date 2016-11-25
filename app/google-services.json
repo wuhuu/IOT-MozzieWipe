@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:749493943825:android:d990d449b6e59ac2",
+        "mobilesdk_app_id": "1:749493943825:android:df4ad9366de23055",
         "android_client_info": {
-          "package_name": "is439.iot.mozziewipe"
+          "package_name": "is439.sis.mozziewipe"
         }
       },
       "oauth_client": [
         {
-          "client_id": "749493943825-9bnnlv38tkmdaik5mt9v6rddod3buvf5.apps.googleusercontent.com",
+          "client_id": "749493943825-v5g85s6mrfqdd8ldjndtkqm3kmcjdcg6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "is439.iot.mozziewipe",
-            "certificate_hash": "6F389385AF21042C18A9FC557E8A4AE4C6842303"
+            "package_name": "is439.sis.mozziewipe",
+            "certificate_hash": "327700A6608EF23A2B1ED615556E700F48A90137"
           }
         },
         {

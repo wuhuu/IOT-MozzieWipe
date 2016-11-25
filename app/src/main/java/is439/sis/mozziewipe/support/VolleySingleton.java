@@ -1,4 +1,4 @@
-package is439.iot.mozziewipe.support;
+package is439.sis.mozziewipe.support;
 
 import android.content.Context;
 import android.graphics.Bitmap;

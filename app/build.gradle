@@ -12,7 +12,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.2"
     defaultConfig {
-        applicationId "is439.iot.mozziewipe"
+        applicationId "is439.sis.mozziewipe"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 5

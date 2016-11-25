@@ -1,4 +1,4 @@
-package is439.iot.mozziewipe;
+package is439.sis.mozziewipe;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
